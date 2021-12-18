@@ -1,11 +1,14 @@
 # coding=utf-8
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
+import re
 
 headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
 
 core_link = "https://www.tripadvisor.ru"
+
 
 def parse_links():
     links = []
@@ -53,6 +56,7 @@ def parse_rest_info(link) -> dict:
 
 
 def parse_rest_comments(link):
+    id_comment = 1
     comments_links_all = []
     next_button_link = link
     comments_result_dict = {}
@@ -69,16 +73,33 @@ def parse_rest_comments(link):
             break
         next_button_link = core_link + next_button_class.get('href')
     print(comments_links_all)
+    results_comments = []
+    # df = pd.DataFrame(columns=['id', 'comment_text', 'comment_usabitily'])
     # парсим информацию из каждого комментария
     for current_comment_link in comments_links_all:
         response = requests.get(current_comment_link, headers=headers)
         soup = BeautifulSoup(response.text, features="html.parser")
         comment_text = soup.find('p', {'class': 'partial_entry'})
         if comment_text is not None:
+            comment_text_final = comment_text.get_text()
             comments_result_dict["comment_text"] = comment_text.get_text()
         comment_usability = soup.find('span', {'class': 'numHelp emphasizeWithColor'})
         if comment_usability is not None:
-            comments_result_dict["comment_usabitily"] = comment_usability.get_text()
+            comment_numbers = re.findall('\d+', comment_usability.get_text())
+            if len(comment_numbers) == 0:
+                comment_usabitily_final = 0
+            else:
+                comment_usabitily_final = int(comment_numbers[0])
+            comments_result_dict["comment_usabitily"] = comment_usabitily_final
+        else:
+            comment_usabitily_final = 0
+        results_comments.append([comment_text_final, comment_usabitily_final])
+        id_comment = id_comment + 1
+        comment_text_final = ''
+        comment_usabitily_final = ''
+    df = pd.DataFrame(results_comments, columns=['comment_text', 'comment_usabitily'])
+    print(df)
+    df.to_csv('comments.csv')
 
 
 
@@ -88,11 +109,11 @@ if __name__ == '__main__':
 
     results_info = []
     results_comments = []
-    for link in parsed_links:
+    # for link in parsed_links:
         # results_info.append(parse_rest_info(link))
         # results_comments.append(parse_rest_comments(link))
-        parse_rest_comments(link)
-
+        # parse_rest_comments(link)
+    parse_rest_comments('https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
     print(1)
 
 
