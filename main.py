@@ -53,20 +53,33 @@ def parse_rest_info(link) -> dict:
 
 
 def parse_rest_comments(link):
-    comments_links = []
+    comments_links_all = []
     next_button_link = link
+    comments_result_dict = {}
 
     while next_button_link is not None:
+        # парсим ссылки на все комментарии
         response = requests.get(next_button_link, headers=headers)
         soup = BeautifulSoup(response.text, features="html.parser")
-        comments_url = soup.find_all('a', {'class': 'title'})
-        for elem in comments_url:
-            comments_links.append(core_link + elem.get('href'))
+        comments_links_from_page = soup.find_all('a', {'class': 'title'})
+        for elem in comments_links_from_page:
+            comments_links_all.append(core_link + elem.get('href'))
         next_button_class = soup.find('a', {'class': 'nav next ui_button primary'})
         if next_button_class is None:
             break
         next_button_link = core_link + next_button_class.get('href')
-    print(comments_url)
+    print(comments_links_all)
+    # парсим информацию из каждого комментария
+    for current_comment_link in comments_links_all:
+        response = requests.get(current_comment_link, headers=headers)
+        soup = BeautifulSoup(response.text, features="html.parser")
+        comment_text = soup.find('p', {'class': 'partial_entry'})
+        if comment_text is not None:
+            comments_result_dict["comment_text"] = comment_text.get_text()
+        comment_usability = soup.find('span', {'class': 'numHelp emphasizeWithColor'})
+        if comment_usability is not None:
+            comments_result_dict["comment_usabitily"] = comment_usability.get_text()
+
 
 
 if __name__ == '__main__':
