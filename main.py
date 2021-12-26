@@ -7,10 +7,8 @@ import re
 headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
 
-core_link = "https://www.tripadvisor.ru"
 
-
-def parse_links():
+def parse_links_for_all_rests():
     links = []
     for i in range(1, 2):
         url = f'https://www.tripadvisor.ru/Restaurants-g{298483 + i}-Moscow_Central_Russia.html'
@@ -30,26 +28,35 @@ def parse_rest_info(link) -> dict:
     soup = BeautifulSoup(response.text, features="html.parser")
     rest_name = soup.find('h1', {'class': 'fHibz'}).get_text()
     result_dict['name'] = rest_name
-    rest_url = soup.find_all('span', {'class': 'dOGcA Ci Wc _S C fhGHT'}.get('href'))
-    for elem in rest_url:
+    rest_url_arr = soup.find_all('span', {'class': 'dOGcA Ci Wc _S C fhGHT'}.get('href'))
+    rest_url = ''
+    for elem in rest_url_arr:
         if (elem.get_text() == 'Веб-сайт'):
-            url = elem.get('href')
-            result_dict[url] = url
+            rest_url = elem.get('href')
+            result_dict['url'] = rest_url
 
-    rest_phone = soup.find_all('a', {'class': 'iPqaD _F G- ddFHE eKwUx'})
-    for elem in rest_phone:
+    rest_phone_arr = soup.find_all('a', {'class': 'iPqaD _F G- ddFHE eKwUx'})
+    rest_phone = ''
+    for elem in rest_phone_arr:
         phone = elem.get('href').split(sep=":")
         if len(phone) == 2 and phone[0] == "tel":
-            result_dict['phone'] = phone[1]
+            rest_phone = phone[1]
+            result_dict['phone'] = rest_phone
 
-    rest_address = soup.find('a', {'class': 'fhGHT', 'href': '#MAPVIEW'})
-    result_dict['address'] = rest_address
+    rest_address_found = soup.find('a', {'class': 'fhGHT', 'href': '#MAPVIEW'})
+    rest_address = ''
+    if rest_address_found is not None:
+        rest_address = rest_address_found.get_text()
+        result_dict['address'] = rest_address
 
-    rest_reviews_num_arr = soup.find('a', {'class': 'dUfZJ'}).get_text.split(sep=" ")
+    rest_reviews_num_arr = soup.find('a', {'class': 'dUfZJ'}).get_text().split(sep=" ")
     result_dict['reviews_num'] = rest_reviews_num_arr[0]
 
     rest_rating_arr = soup.find('svg', {'class': 'RWYkj d H0'}).get('title').split(sep=" ")
     result_dict['rating'] = rest_rating_arr[0]
+
+    results_restaurants.append(
+        [rest_name, rest_url, rest_phone, rest_address, rest_reviews_num_arr[0], rest_rating_arr[0]])
 
     print(result_dict)
     return result_dict
@@ -73,8 +80,6 @@ def parse_rest_comments(link):
             break
         next_button_link = core_link + next_button_class.get('href')
     print(comments_links_all)
-    results_comments = []
-    # df = pd.DataFrame(columns=['id', 'comment_text', 'comment_usabitily'])
     # парсим информацию из каждого комментария
     for current_comment_link in comments_links_all:
         response = requests.get(current_comment_link, headers=headers)
@@ -87,33 +92,43 @@ def parse_rest_comments(link):
         if comment_usability is not None:
             comment_numbers = re.findall('\d+', comment_usability.get_text())
             if len(comment_numbers) == 0:
-                comment_usabitily_final = 0
+                comment_usability_final = 0
             else:
-                comment_usabitily_final = int(comment_numbers[0])
-            comments_result_dict["comment_usabitily"] = comment_usabitily_final
+                comment_usability_final = int(comment_numbers[0])
+            comments_result_dict["comment_usability"] = comment_usability_final
         else:
-            comment_usabitily_final = 0
-        results_comments.append([comment_text_final, comment_usabitily_final])
+            comment_usability_final = 0
+        results_comments.append([rest_id, comment_text_final, comment_usability_final])
         id_comment = id_comment + 1
         comment_text_final = ''
-        comment_usabitily_final = ''
-    df = pd.DataFrame(results_comments, columns=['comment_text', 'comment_usabitily'])
-    print(df)
-    df.to_csv('comments.csv')
-
+        comment_usability_final = ''
 
 
 if __name__ == '__main__':
-
-    parsed_links = parse_links()
-
-    results_info = []
+    core_link = "https://www.tripadvisor.ru"
+    parsed_links_for_all_rests = parse_links_for_all_rests()
     results_comments = []
-    # for link in parsed_links:
-        # results_info.append(parse_rest_info(link))
-        # results_comments.append(parse_rest_comments(link))
-        # parse_rest_comments(link)
-    parse_rest_comments('https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
-    print(1)
+    results_restaurants = []
 
+    rest_id = 0
+    for link in parsed_links_for_all_rests:
+        parse_rest_info(link)
+        parse_rest_comments(link)
+        rest_id = rest_id + 1
+        if rest_id == 3:
+            break
 
+    # parse_rest_info(
+    #     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
+    # parse_rest_comments(
+    #     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
+    # parse_rest_comments('https://www.tripadvisor.ru/Restaurant_Review-g298484-d21168454-Reviews-Ocean_Basket_Myasnitskaya-Moscow_Central_Russia.html')
+
+    df_restaurants = pd.DataFrame(results_restaurants,
+                                  columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address', 'rest_reviews_number',
+                                           'rest_rating'])
+    df_restaurants.index.rename('id_restaurant', inplace=True)
+    df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability'])
+    df_comments.index.rename('id_comment', inplace=True)
+    df_restaurants.to_csv('restraunts_info.csv')
+    df_comments.to_csv('comments.csv')
