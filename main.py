@@ -9,17 +9,30 @@ headers = {
 
 
 def parse_links_for_all_rests():
-    links = []
-    for i in range(1, 2):
-        url = f'https://www.tripadvisor.ru/Restaurants-g{298483 + i}-Moscow_Central_Russia.html'
-        print(url)
-        response = requests.get(url, headers=headers)
+    # links = []
+    next_button_link = init_link
+    while next_button_link is not None:
+        # парсим ссылки на все рестораны
+        response = requests.get(next_button_link, headers=headers)
         soup = BeautifulSoup(response.text, features="html.parser")
-        divs = soup.find_all('div', {'class': 'OhCyu'})
-        for div in divs:
-            link = div.find('a', attrs={'class': 'bHGqj Cj b'}).get('href')
-            links.append(core_link + link)
-        return links
+        rest_links_from_page = soup.find_all('a', {'class': 'bHGqj Cj b'})
+        for elem in rest_links_from_page:
+            parsed_links_for_all_rests.append(core_link + elem.get('href'))
+        next_button_class = soup.find('a', {'class': 'nav next rndBtn ui_button primary taLnk'})
+        if next_button_class is None:
+            break
+        next_button_link = core_link + next_button_class.get('href')
+        print(next_button_link)
+    # for i in range(1, 2):
+    #     url = f'https://www.tripadvisor.ru/Restaurants-g{298483 + i}-Moscow_Central_Russia.html'
+    #     print(url)
+    #     response = requests.get(url, headers=headers)
+    #     soup = BeautifulSoup(response.text, features="html.parser")
+    #     divs = soup.find_all('div', {'class': 'OhCyu'})
+    #     for div in divs:
+    #         link = div.find('a', attrs={'class': 'bHGqj Cj b'}).get('href')
+    #         links.append(core_link + link)
+    #     return links
 
 
 def parse_rest_info(link) -> dict:
@@ -28,12 +41,15 @@ def parse_rest_info(link) -> dict:
     soup = BeautifulSoup(response.text, features="html.parser")
     rest_name = soup.find('h1', {'class': 'fHibz'}).get_text()
     result_dict['name'] = rest_name
-    rest_url_arr = soup.find_all('span', {'class': 'dOGcA Ci Wc _S C fhGHT'}.get('href'))
+    rest_url_arr = soup.find_all('website')
+
+    rest_url_arr = soup.find_all('a', {'class': 'dOGcA Ci Wc _S C fhGHT'}, href=True)
     rest_url = ''
     for elem in rest_url_arr:
-        if (elem.get_text() == 'Веб-сайт'):
+        if elem.get_text() == 'Веб-сайт':
             rest_url = elem.get('href')
             result_dict['url'] = rest_url
+            break
 
     rest_phone_arr = soup.find_all('a', {'class': 'iPqaD _F G- ddFHE eKwUx'})
     rest_phone = ''
@@ -106,29 +122,39 @@ def parse_rest_comments(link):
 
 if __name__ == '__main__':
     core_link = "https://www.tripadvisor.ru"
-    parsed_links_for_all_rests = parse_links_for_all_rests()
+    init_link = core_link + '/Restaurants-g298484-Moscow_Central_Russia.html'
+    # parsed_links_for_all_rests = parse_links_for_all_rests()
+    parsed_links_for_all_rests = []
     results_comments = []
     results_restaurants = []
 
+    parse_links_for_all_rests()
+    df_rest_links = pd.DataFrame(parsed_links_for_all_rests, columns=['link'])
+    df_rest_links.to_csv('rest_links.csv')
+
     rest_id = 0
-    for link in parsed_links_for_all_rests:
-        parse_rest_info(link)
-        parse_rest_comments(link)
-        rest_id = rest_id + 1
-        if rest_id == 3:
-            break
+    # for link in parsed_links_for_all_rests:
+    #     parse_rest_info(link)
+    #     parse_rest_comments(link)
+    #     rest_id = rest_id + 1
+    #     if rest_id == 3:
+    #         break
+    #
+    # df_restaurants = pd.DataFrame(results_restaurants,
+    #                               columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address', 'rest_reviews_number',
+    #                                        'rest_rating'])
+    # df_restaurants.index.rename('id_restaurant', inplace=True)
+    # df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability'])
+    # df_comments.index.rename('id_comment', inplace=True)
+    # df_restaurants.to_csv('restraunts_info.csv')
+    # df_comments.to_csv('comments.csv')
 
-    # parse_rest_info(
-    #     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
-    # parse_rest_comments(
-    #     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
-    # parse_rest_comments('https://www.tripadvisor.ru/Restaurant_Review-g298484-d21168454-Reviews-Ocean_Basket_Myasnitskaya-Moscow_Central_Russia.html')
 
-    df_restaurants = pd.DataFrame(results_restaurants,
-                                  columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address', 'rest_reviews_number',
-                                           'rest_rating'])
-    df_restaurants.index.rename('id_restaurant', inplace=True)
-    df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability'])
-    df_comments.index.rename('id_comment', inplace=True)
-    df_restaurants.to_csv('restraunts_info.csv')
-    df_comments.to_csv('comments.csv')
+
+# parse_rest_info(
+#     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
+# parse_rest_comments(
+#     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
+# parse_rest_comments('https://www.tripadvisor.ru/Restaurant_Review-g298484-d21168454-Reviews-Ocean_Basket_Myasnitskaya-Moscow_Central_Russia.html')
+
+
