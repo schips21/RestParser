@@ -41,7 +41,6 @@ def parse_rest_info(link) -> dict:
     soup = BeautifulSoup(response.text, features="html.parser")
     rest_name = soup.find('h1', {'class': 'fHibz'}).get_text()
     result_dict['name'] = rest_name
-    rest_url_arr = soup.find_all('website')
 
     rest_url_arr = soup.find_all('a', {'class': 'dOGcA Ci Wc _S C fhGHT'}, href=True)
     rest_url = ''
@@ -65,14 +64,20 @@ def parse_rest_info(link) -> dict:
         rest_address = rest_address_found.get_text()
         result_dict['address'] = rest_address
 
-    rest_reviews_num_arr = soup.find('a', {'class': 'dUfZJ'}).get_text().split(sep=" ")
-    result_dict['reviews_num'] = rest_reviews_num_arr[0]
+    rest_reviews_num = ''
+    rest_reviews_num_found = soup.find('a', {'class': 'dUfZJ'})
+    if rest_reviews_num_found is not None:
+        rest_reviews_num_arr = rest_reviews_num_found.get_text().split(sep=" ")
+        rest_reviews_num = rest_reviews_num_arr[0]
 
-    rest_rating_arr = soup.find('svg', {'class': 'RWYkj d H0'}).get('title').split(sep=" ")
-    result_dict['rating'] = rest_rating_arr[0]
+    rest_rating = ''
+    rest_rating_found = soup.find('svg', {'class': 'RWYkj d H0'})
+    if rest_rating_found is not None:
+        rest_rating_arr = rest_rating_found.get('title').split(sep=" ")
+        rest_rating = rest_rating_arr[0]
 
     results_restaurants.append(
-        [rest_name, rest_url, rest_phone, rest_address, rest_reviews_num_arr[0], rest_rating_arr[0]])
+        [rest_name, rest_url, rest_phone, rest_address, rest_reviews_num, rest_rating])
 
     print(result_dict)
     return result_dict
@@ -128,9 +133,9 @@ if __name__ == '__main__':
     results_comments = []
     results_restaurants = []
 
-    parse_links_for_all_rests()
-    df_rest_links = pd.DataFrame(parsed_links_for_all_rests, columns=['link'])
-    df_rest_links.to_csv('rest_links.csv')
+    # parse_links_for_all_rests()
+    # df_rest_links = pd.DataFrame(parsed_links_for_all_rests, columns=['link'])
+    # df_rest_links.to_csv('rest_links.csv')
 
     rest_id = 0
     # for link in parsed_links_for_all_rests:
@@ -151,10 +156,9 @@ if __name__ == '__main__':
 
 
 
-# parse_rest_info(
-#     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
-# parse_rest_comments(
-#     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d14149778-Reviews-Tweed_Stout-Moscow_Central_Russia.html')
-# parse_rest_comments('https://www.tripadvisor.ru/Restaurant_Review-g298484-d21168454-Reviews-Ocean_Basket_Myasnitskaya-Moscow_Central_Russia.html')
+parse_rest_info(
+    'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
+parse_rest_comments(
+    'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
 
 
