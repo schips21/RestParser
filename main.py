@@ -84,7 +84,7 @@ def parse_rest_info(link) -> dict:
 
 
 def parse_rest_comments(link):
-    id_comment = 1
+    # id_comment = 1
     comments_links_all = []
     next_button_link = link
     comments_result_dict = {}
@@ -100,7 +100,7 @@ def parse_rest_comments(link):
         if next_button_class is None:
             break
         next_button_link = core_link + next_button_class.get('href')
-    print(comments_links_all)
+    # print(comments_links_all)
     # парсим информацию из каждого комментария
     for current_comment_link in comments_links_all:
         response = requests.get(current_comment_link, headers=headers)
@@ -120,7 +120,7 @@ def parse_rest_comments(link):
         else:
             comment_usability_final = 0
         results_comments.append([rest_id, comment_text_final, comment_usability_final])
-        id_comment = id_comment + 1
+        # id_comment = id_comment + 1
         comment_text_final = ''
         comment_usability_final = ''
 
@@ -128,7 +128,6 @@ def parse_rest_comments(link):
 if __name__ == '__main__':
     core_link = "https://www.tripadvisor.ru"
     init_link = core_link + '/Restaurants-g298484-Moscow_Central_Russia.html'
-    # parsed_links_for_all_rests = parse_links_for_all_rests()
     parsed_links_for_all_rests = []
     results_comments = []
     results_restaurants = []
@@ -154,11 +153,10 @@ if __name__ == '__main__':
     # df_restaurants.to_csv('restraunts_info.csv')
     # df_comments.to_csv('comments.csv')
 
-
-
-parse_rest_info(
-    'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
+    try:
+        parse_rest_info(
+            'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
+    except BaseException:
+        print('Error')
 parse_rest_comments(
     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
-
-
