@@ -1,4 +1,6 @@
 # coding=utf-8
+import csv
+
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -23,16 +25,8 @@ def parse_links_for_all_rests():
             break
         next_button_link = core_link + next_button_class.get('href')
         print(next_button_link)
-    # for i in range(1, 2):
-    #     url = f'https://www.tripadvisor.ru/Restaurants-g{298483 + i}-Moscow_Central_Russia.html'
-    #     print(url)
-    #     response = requests.get(url, headers=headers)
-    #     soup = BeautifulSoup(response.text, features="html.parser")
-    #     divs = soup.find_all('div', {'class': 'OhCyu'})
-    #     for div in divs:
-    #         link = div.find('a', attrs={'class': 'bHGqj Cj b'}).get('href')
-    #         links.append(core_link + link)
-    #     return links
+        if len(parsed_links_for_all_rests) > 10000:
+            break
 
 
 def parse_rest_info(link) -> dict:
@@ -42,13 +36,15 @@ def parse_rest_info(link) -> dict:
     rest_name = soup.find('h1', {'class': 'fHibz'}).get_text()
     result_dict['name'] = rest_name
 
-    rest_url_arr = soup.find_all('a', {'class': 'dOGcA Ci Wc _S C fhGHT'}, href=True)
-    rest_url = ''
-    for elem in rest_url_arr:
-        if elem.get_text() == 'Веб-сайт':
-            rest_url = elem.get('href')
-            result_dict['url'] = rest_url
-            break
+    # rest_url_arr = soup.find_all('a', {'class': 'dOGcA Ci Wc _S C fhGHT'}, href=True)
+    # rest_url = ''
+    # for elem in rest_url_arr:
+    #     if elem.get_text() == 'Веб-сайт':
+    #         rest_url = elem.get('href')
+    #         result_dict['url'] = rest_url
+    #         break
+    rest_url = link
+    result_dict['url'] = rest_url
 
     rest_phone_arr = soup.find_all('a', {'class': 'iPqaD _F G- ddFHE eKwUx'})
     rest_phone = ''
@@ -127,36 +123,43 @@ def parse_rest_comments(link):
 
 if __name__ == '__main__':
     core_link = "https://www.tripadvisor.ru"
-    init_link = core_link + '/Restaurants-g298484-Moscow_Central_Russia.html'
+    init_link = core_link + '/Restaurants-g298486-oa30-Tula_Tula_Oblast_Central_Russia.html'
     parsed_links_for_all_rests = []
     results_comments = []
     results_restaurants = []
 
-    # parse_links_for_all_rests()
-    # df_rest_links = pd.DataFrame(parsed_links_for_all_rests, columns=['link'])
-    # df_rest_links.to_csv('rest_links.csv')
+    parse_links_for_all_rests()
+    df_rest_links = pd.DataFrame(parsed_links_for_all_rests, columns=['link'])
+    df_rest_links.to_csv('rest_links.csv', index=False, header=False)
+    print('Ссылки на рестораны успешно собраны')
 
-    rest_id = 0
-    # for link in parsed_links_for_all_rests:
-    #     parse_rest_info(link)
-    #     parse_rest_comments(link)
-    #     rest_id = rest_id + 1
-    #     if rest_id == 3:
-    #         break
-    #
-    # df_restaurants = pd.DataFrame(results_restaurants,
-    #                               columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address', 'rest_reviews_number',
-    #                                        'rest_rating'])
-    # df_restaurants.index.rename('id_restaurant', inplace=True)
-    # df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability'])
-    # df_comments.index.rename('id_comment', inplace=True)
-    # df_restaurants.to_csv('restraunts_info.csv')
-    # df_comments.to_csv('comments.csv')
-
+    rest_id = 487
     try:
-        parse_rest_info(
-            'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
+        for link in parsed_links_for_all_rests:
+            print('Собираем данные о ресторане № ' + rest_id.__str__() + ' ' + link)
+            parse_rest_info(link)
+            parse_rest_comments(link)
+            print('Данные о ресторане № ' + rest_id.__str__() + ' успешно собраны')
+            rest_id = rest_id + 1
+            df_restaurants = pd.DataFrame(results_restaurants,
+                                          columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address', 'rest_reviews_number', 'rest_rating'])
+            # df_restaurants.index.rename('id_restaurant', inplace=True)
+            df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability'])
+            # df_comments.index.rename('id_comment', inplace=True)
+            df_restaurants.to_csv('restraunts_info.csv', mode='a', header=False, index=True)
+            df_comments.to_csv('comments.csv', mode='a', header=False, index=True)
+            results_comments = []
+            results_restaurants = []
+
     except BaseException:
-        print('Error')
-parse_rest_comments(
-    'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
+        print('Error' + BaseException)
+
+
+#
+#     try:
+#         parse_rest_info(
+#             'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
+#     except BaseException:
+#         print('Error')
+# parse_rest_comments(
+#     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
