@@ -29,10 +29,12 @@ def parse_links_for_all_rests():
             break
 
 
-def parse_rest_info(link) -> dict:
+def parse_rest_info(link):
     result_dict = {}
     response = requests.get(link, headers=headers)
     soup = BeautifulSoup(response.text, features="html.parser")
+    if soup.find('h1', {'class': 'fHibz'}) is None:
+        return
     rest_name = soup.find('h1', {'class': 'fHibz'}).get_text()
     result_dict['name'] = rest_name
 
@@ -76,7 +78,7 @@ def parse_rest_info(link) -> dict:
         [rest_name, rest_url, rest_phone, rest_address, rest_reviews_num, rest_rating])
 
     print(result_dict)
-    return result_dict
+    # return result_dict
 
 
 def parse_rest_comments(link):
@@ -123,7 +125,7 @@ def parse_rest_comments(link):
 
 if __name__ == '__main__':
     core_link = "https://www.tripadvisor.ru"
-    init_link = core_link + '/Restaurants-g298486-oa30-Tula_Tula_Oblast_Central_Russia.html'
+    init_link = core_link + '/Restaurants-g298487-oa30-Tver_Tver_Oblast_Central_Russia.html'
     parsed_links_for_all_rests = []
     results_comments = []
     results_restaurants = []
@@ -133,7 +135,7 @@ if __name__ == '__main__':
     df_rest_links.to_csv('rest_links.csv', index=False, header=False)
     print('Ссылки на рестораны успешно собраны')
 
-    rest_id = 487
+    rest_id = 631
     try:
         for link in parsed_links_for_all_rests:
             print('Собираем данные о ресторане № ' + rest_id.__str__() + ' ' + link)
