@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eea49aad-ecbb-48bf-bcb1-aca9aca8172e" name="Changes" comment="собрала комментарии по Новосибирску">
+    <list default="true" id="eea49aad-ecbb-48bf-bcb1-aca9aca8172e" name="Changes" comment="собрала комментарии по Нижнему Новгороду">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comments.csv" beforeDir="false" afterPath="$PROJECT_DIR$/comments.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest_links.csv" beforeDir="false" afterPath="$PROJECT_DIR$/rest_links.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restraunts_info.csv" beforeDir="false" afterPath="$PROJECT_DIR$/restraunts_info.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +133,14 @@
       <option name="project" value="LOCAL" />
       <updated>1640926244024</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="собрала комментарии по Нижнему Новгороду">
+      <created>1640945043668</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1640945043668</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -162,7 +165,8 @@
     <MESSAGE value="собрала комментарии по Туле" />
     <MESSAGE value="собрала комментарии по Твери" />
     <MESSAGE value="собрала комментарии по Новосибирску" />
-    <option name="LAST_COMMIT_MESSAGE" value="собрала комментарии по Новосибирску" />
+    <MESSAGE value="собрала комментарии по Нижнему Новгороду" />
+    <option name="LAST_COMMIT_MESSAGE" value="собрала комментарии по Нижнему Новгороду" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
