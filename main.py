@@ -140,7 +140,7 @@ if __name__ == '__main__':
     df_rest_links.to_csv('rest_links.csv', index=False, header=False)
     print('Ссылки на рестораны успешно собраны')
 
-    rest_id = 0
+    rest_id = 738
     try:
         for link in parsed_links_for_all_rests:
             print('Собираем данные о ресторане № ' + rest_id.__str__() + ' ' + link)
