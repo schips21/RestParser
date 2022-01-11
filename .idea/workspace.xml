@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eea49aad-ecbb-48bf-bcb1-aca9aca8172e" name="Changes" comment="добавила валидные id">
+    <list default="true" id="eea49aad-ecbb-48bf-bcb1-aca9aca8172e" name="Changes" comment="собрала рестораны Липецка">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/comments.csv" beforeDir="false" afterPath="$PROJECT_DIR$/comments.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -151,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1640952295734</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="собрала рестораны Липецка">
+      <created>1641875229024</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1641875229024</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -178,7 +185,8 @@
     <MESSAGE value="собрала комментарии по Новосибирску" />
     <MESSAGE value="собрала комментарии по Нижнему Новгороду" />
     <MESSAGE value="добавила валидные id" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавила валидные id" />
+    <MESSAGE value="собрала рестораны Липецка" />
+    <option name="LAST_COMMIT_MESSAGE" value="собрала рестораны Липецка" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -195,12 +203,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>164</line>
+          <line>166</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>120</line>
+          <line>121</line>
           <option name="timeStamp" value="66" />
         </line-breakpoint>
       </breakpoints>
