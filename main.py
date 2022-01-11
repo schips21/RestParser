@@ -117,15 +117,19 @@ def parse_rest_comments(link):
             comments_result_dict["comment_usability"] = comment_usability_final
         else:
             comment_usability_final = 0
-        results_comments.append([rest_id, comment_text_final, comment_usability_final])
+        comment_date = soup.find_all('span', {'class': 'ratingDate relativeDate'})
+        if comment_date is not None and comment_date.__len__() > 0:
+            comment_date_final = comment_date[0].get('title')
+        results_comments.append([rest_id, comment_text_final, comment_usability_final, comment_date_final])
         # id_comment = id_comment + 1
         comment_text_final = ''
         comment_usability_final = ''
+        comment_date_final = ''
 
 
 if __name__ == '__main__':
     core_link = "https://www.tripadvisor.ru"
-    init_link = core_link + '/Restaurants-g298515-Nizhny_Novgorod_Nizhny_Novgorod_Oblast_Volga_District.html'
+    init_link = core_link + '/Restaurants-g798123-Lipetsk_Lipetsk_Oblast_Central_Russia.html'
     parsed_links_for_all_rests = []
     results_comments = []
     results_restaurants = []
@@ -135,7 +139,7 @@ if __name__ == '__main__':
     df_rest_links.to_csv('rest_links.csv', index=False, header=False)
     print('Ссылки на рестораны успешно собраны')
 
-    rest_id = 1287
+    rest_id = 0
     try:
         for link in parsed_links_for_all_rests:
             print('Собираем данные о ресторане № ' + rest_id.__str__() + ' ' + link)
@@ -145,7 +149,7 @@ if __name__ == '__main__':
             df_restaurants = pd.DataFrame(results_restaurants,
                                           columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address', 'rest_reviews_number', 'rest_rating'])
             # df_restaurants.index.rename('id_restaurant', inplace=True)
-            df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability'])
+            df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability', 'comment_date'])
             # df_comments.index.rename('id_comment', inplace=True)
             df_restaurants.to_csv('restraunts_info.csv', mode='a', header=False, index=True)
             df_comments.to_csv('comments.csv', mode='a', header=False, index=True)
