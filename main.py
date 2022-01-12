@@ -130,7 +130,7 @@ def parse_rest_comments(link):
 
 if __name__ == '__main__':
     core_link = "https://www.tripadvisor.ru"
-    init_link = core_link + '/Restaurants-g798124-Voronezh_Voronezh_Oblast_Central_Russia.html'
+    init_link = core_link + '/Restaurants-g608957-Bryansk_Bryansk_Oblast_Central_Russia.html'
     parsed_links_for_all_rests = []
     results_comments = []
     results_restaurants = []
