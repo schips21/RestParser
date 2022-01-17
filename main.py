@@ -130,7 +130,7 @@ def parse_rest_comments(link):
 
 if __name__ == '__main__':
     core_link = "https://www.tripadvisor.ru"
-    init_link = core_link + '/Restaurants-g737147-Barnaul_Altai_Krai_Siberian_District.html'
+    init_link = core_link + '/Restaurants-g662362-Tyumen_Tyumen_Oblast_Urals_District.html'
     parsed_links_for_all_rests = []
     results_comments = []
     results_restaurants = []
@@ -140,7 +140,7 @@ if __name__ == '__main__':
     df_rest_links.to_csv('rest_links.csv', index=False, header=False)
     print('Ссылки на рестораны успешно собраны')
 
-    rest_id = 6311
+    rest_id = 7087
     try:
         for link in parsed_links_for_all_rests:
             print('Собираем данные о ресторане № ' + rest_id.__str__() + ' ' + link)
