@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eea49aad-ecbb-48bf-bcb1-aca9aca8172e" name="Changes" comment="собрала информацию по Астрахани, обновила индекс">
+    <list default="true" id="eea49aad-ecbb-48bf-bcb1-aca9aca8172e" name="Changes" comment="собрала информацию по Кемерово, обновила индекс">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/comments.csv" beforeDir="false" afterPath="$PROJECT_DIR$/comments.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest_links.csv" beforeDir="false" afterPath="$PROJECT_DIR$/rest_links.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/restraunts_info.csv" beforeDir="false" afterPath="$PROJECT_DIR$/restraunts_info.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -282,7 +281,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642457725534</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="собрала информацию по Кемерово, обновила индекс">
+      <created>1642478526759</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1642478526759</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -298,7 +304,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="добавила перехват исключений" />
     <MESSAGE value="собрала комментарии по Рязани" />
     <MESSAGE value="собрала комментарии по Туле" />
     <MESSAGE value="собрала комментарии по Твери" />
@@ -323,29 +328,15 @@
     <MESSAGE value="собрала информацию по Кирову, обновила индекс" />
     <MESSAGE value="собрала информацию по Набережным Ченам, обновила индекс" />
     <MESSAGE value="собрала информацию по Астрахани, обновила индекс" />
-    <option name="LAST_COMMIT_MESSAGE" value="собрала информацию по Астрахани, обновила индекс" />
+    <MESSAGE value="собрала информацию по Кемерово, обновила индекс" />
+    <option name="LAST_COMMIT_MESSAGE" value="собрала информацию по Кемерово, обновила индекс" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>13</line>
-          <option name="timeStamp" value="57" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>40</line>
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>166</line>
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>121</line>
+          <line>109</line>
           <option name="timeStamp" value="66" />
         </line-breakpoint>
       </breakpoints>

@@ -11,7 +11,6 @@ headers = {
 
 
 def parse_links_for_all_rests():
-    # links = []
     next_button_link = init_link
     while next_button_link is not None:
         # парсим ссылки на все рестораны
@@ -38,13 +37,6 @@ def parse_rest_info(link) -> bool:
     rest_name = soup.find('h1', {'class': 'fHibz'}).get_text()
     result_dict['name'] = rest_name
 
-    # rest_url_arr = soup.find_all('a', {'class': 'dOGcA Ci Wc _S C fhGHT'}, href=True)
-    # rest_url = ''
-    # for elem in rest_url_arr:
-    #     if elem.get_text() == 'Веб-сайт':
-    #         rest_url = elem.get('href')
-    #         result_dict['url'] = rest_url
-    #         break
     rest_url = link
     result_dict['url'] = rest_url
 
@@ -79,11 +71,8 @@ def parse_rest_info(link) -> bool:
     parse_rest_comments(link)
     print(result_dict)
     return True
-    # return result_dict
-
 
 def parse_rest_comments(link):
-    # id_comment = 1
     comments_links_all = []
     next_button_link = link
     comments_result_dict = {}
@@ -99,7 +88,6 @@ def parse_rest_comments(link):
         if next_button_class is None:
             break
         next_button_link = core_link + next_button_class.get('href')
-    # print(comments_links_all)
     # парсим информацию из каждого комментария
     for current_comment_link in comments_links_all:
         response = requests.get(current_comment_link, headers=headers)
@@ -122,7 +110,6 @@ def parse_rest_comments(link):
         if comment_date is not None and comment_date.__len__() > 0:
             comment_date_final = comment_date[0].get('title')
         results_comments.append([rest_id, comment_text_final, comment_usability_final, comment_date_final])
-        # id_comment = id_comment + 1
         comment_text_final = ''
         comment_usability_final = ''
         comment_date_final = ''
@@ -149,9 +136,9 @@ if __name__ == '__main__':
             print('Данные о ресторане № ' + rest_id.__str__() + ' успешно собраны')
             rest_id = rest_id + 1
             df_restaurants = pd.DataFrame(results_restaurants,
-                                          columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address', 'rest_reviews_number', 'rest_rating'])
+                                          columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address', 'rest_reviews_number', 'rest_rating (from 1 to 5: the greater the value, the better the rating; -1: no rating)'])
             # df_restaurants.index.rename('id_restaurant', inplace=True)
-            df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability', 'comment_date'])
+            df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability (the greater the value, the greater the usability)', 'comment_date'])
             # df_comments.index.rename('id_comment', inplace=True)
             df_restaurants.to_csv('restraunts_info.csv', mode='a', header=False, index=True)
             df_comments.to_csv('comments.csv', mode='a', header=False, index=True)
@@ -161,12 +148,3 @@ if __name__ == '__main__':
     except BaseException:
         print('Error' + BaseException)
 
-
-#
-#     try:
-#         parse_rest_info(
-#             'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
-#     except BaseException:
-#         print('Error')
-# parse_rest_comments(
-#     'https://www.tripadvisor.ru/Restaurant_Review-g298484-d8344415-Reviews-Auran-Moscow_Central_Russia.html')
