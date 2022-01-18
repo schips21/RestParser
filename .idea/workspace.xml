@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eea49aad-ecbb-48bf-bcb1-aca9aca8172e" name="Changes" comment="собрала информацию по Набережным Ченам, обновила индекс">
+    <list default="true" id="eea49aad-ecbb-48bf-bcb1-aca9aca8172e" name="Changes" comment="собрала информацию по Астрахани, обновила индекс">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/comments.csv" beforeDir="false" afterPath="$PROJECT_DIR$/comments.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -275,7 +275,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642448303762</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="собрала информацию по Астрахани, обновила индекс">
+      <created>1642457725534</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1642457725534</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -291,7 +298,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="проверила работу на малозаполненном ресторане" />
     <MESSAGE value="добавила перехват исключений" />
     <MESSAGE value="собрала комментарии по Рязани" />
     <MESSAGE value="собрала комментарии по Туле" />
@@ -316,7 +322,8 @@
     <MESSAGE value="собрала информацию по Чебоксарам, обновила индекс" />
     <MESSAGE value="собрала информацию по Кирову, обновила индекс" />
     <MESSAGE value="собрала информацию по Набережным Ченам, обновила индекс" />
-    <option name="LAST_COMMIT_MESSAGE" value="собрала информацию по Набережным Ченам, обновила индекс" />
+    <MESSAGE value="собрала информацию по Астрахани, обновила индекс" />
+    <option name="LAST_COMMIT_MESSAGE" value="собрала информацию по Астрахани, обновила индекс" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
