@@ -72,6 +72,7 @@ def parse_rest_info(link) -> bool:
     print(result_dict)
     return True
 
+
 def parse_rest_comments(link):
     comments_links_all = []
     next_button_link = link
@@ -115,7 +116,7 @@ def parse_rest_comments(link):
         comment_date_final = ''
 
 
-if __name__ == '__main__':
+def ex_main():
     core_link = "https://www.tripadvisor.ru"
     init_link = core_link + '/Restaurants-g811326-Kemerovo_Kemerovo_Oblast_Siberian_District.html'
     parsed_links_for_all_rests = []
@@ -136,9 +137,13 @@ if __name__ == '__main__':
             print('Данные о ресторане № ' + rest_id.__str__() + ' успешно собраны')
             rest_id = rest_id + 1
             df_restaurants = pd.DataFrame(results_restaurants,
-                                          columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address', 'rest_reviews_number', 'rest_rating (from 1 to 5: the greater the value, the better the rating; -1: no rating)'])
+                                          columns=['rest_name', 'rest_url', 'rest_phone', 'rest_address',
+                                                   'rest_reviews_number',
+                                                   'rest_rating (from 1 to 5: the greater the value, the better the rating; -1: no rating)'])
             # df_restaurants.index.rename('id_restaurant', inplace=True)
-            df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text', 'comment_usability (the greater the value, the greater the usability)', 'comment_date'])
+            df_comments = pd.DataFrame(results_comments, columns=['id_restaurant', 'comment_text',
+                                                                  'comment_usability (the greater the value, the greater the usability)',
+                                                                  'comment_date'])
             # df_comments.index.rename('id_comment', inplace=True)
             df_restaurants.to_csv('restraunts_info.csv', mode='a', header=False, index=True)
             df_comments.to_csv('comments.csv', mode='a', header=False, index=True)
